@@ -398,7 +398,13 @@ void ManifoldGeometry::resize(const Vector3d& newsize, const Eigen::Matrix<bool,
 }
 
 void ManifoldGeometry::updateCachedSize() const {
-  cached_size_ = getManifold().NumVert() * 100;
+  // Estimated memory usage per vertex:
+  // - Position: 24 bytes
+  // - Halfedges (approx 6 per vert): 6 * 16 = 96 bytes
+  // - Normals (vert + 2*face): 24 + 48 = 72 bytes
+  // - Mesh Relation (2*face): 32 bytes
+  // Total ~ 224 bytes + vector overhead + properties
+  cached_size_ = getManifold().NumVert() * 250;
 }
 
 /*! Iterate over all vertices' points until the function returns true (for done). */
