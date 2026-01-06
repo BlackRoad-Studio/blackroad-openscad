@@ -333,19 +333,18 @@ void GeometryEvaluator::smartCacheInsert(const AbstractNode& node,
 #ifdef ENABLE_MANIFOLD
   if (RenderSettings::inst()->backend3D == RenderBackend3D::ManifoldBackend) {
     bool skipCache = false;
-    if (const auto opNode = dynamic_cast<const CsgOpNode*>(&node)) {
+    if (const auto opNode = dynamic_cast<const CsgOpNode *>(&node)) {
       // Skip caching UNION to enable BatchUnion optimizations.
       // We still cache DIFFERENCE and INTERSECTION as they are destructive/expensive
       // and valid candidates for reuse boundaries.
       if (opNode->type == OpenSCADOperator::UNION) {
         skipCache = true;
       }
-    } else if (dynamic_cast<const TransformNode*>(&node) ||
-               dynamic_cast<const ColorNode*>(&node)) {
+    } else if (dynamic_cast<const TransformNode *>(&node) || dynamic_cast<const ColorNode *>(&node)) {
       skipCache = true;
-    } else if (dynamic_cast<const GroupNode*>(&node)) {
+    } else if (dynamic_cast<const GroupNode *>(&node)) {
       // Don't skip the RootNode, as we want to cache the final result
-      if (!dynamic_cast<const RootNode*>(&node)) {
+      if (!dynamic_cast<const RootNode *>(&node)) {
         skipCache = true;
       }
     }

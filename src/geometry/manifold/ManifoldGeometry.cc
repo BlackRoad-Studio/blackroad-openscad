@@ -54,21 +54,24 @@ std::unique_ptr<Geometry> ManifoldGeometry::copy() const
 
 const manifold::Manifold& ManifoldGeometry::getManifold() const { return manifold_; }
 
-bool ManifoldGeometry::isEmpty() const {
+bool ManifoldGeometry::isEmpty() const
+{
   bool empty = getManifold().IsEmpty();
   // IsEmpty() forces evaluation, so we must update the cached size to reflect the loaded mesh.
   updateCachedSize();
   return empty;
 }
 
-size_t ManifoldGeometry::numFacets() const {
+size_t ManifoldGeometry::numFacets() const
+{
   size_t n = getManifold().NumTri();
   // NumTri() forces evaluation.
   updateCachedSize();
   return n;
 }
 
-size_t ManifoldGeometry::numVertices() const {
+size_t ManifoldGeometry::numVertices() const
+{
   size_t n = getManifold().NumVert();
   // NumVert() forces evaluation.
   updateCachedSize();
@@ -85,7 +88,8 @@ bool ManifoldGeometry::isValid() const
   return manifold_.Status() == manifold::Manifold::Error::NoError;
 }
 
-void ManifoldGeometry::clear() {
+void ManifoldGeometry::clear()
+{
   manifold_ = manifold::Manifold();
   cached_size_ = 0;
 }
@@ -397,7 +401,8 @@ void ManifoldGeometry::resize(const Vector3d& newsize, const Eigen::Matrix<bool,
   transform(GeometryUtils::getResizeTransform(this->getBoundingBox(), newsize, autosize));
 }
 
-void ManifoldGeometry::updateCachedSize() const {
+void ManifoldGeometry::updateCachedSize() const
+{
   // Estimated memory usage per vertex:
   // - Position: 24 bytes
   // - Halfedges (approx 6 per vert): 6 * 16 = 96 bytes
